@@ -263,5 +263,27 @@ cat(format(pred,digits =3))
 
 ```{r}
 
+data = read.csv("https://raw.githubusercontent.com/taovalue/hackerrank-codes/master/MultiLinear_HousePx.txt", header=F, sep=" ")
+
+# data = read.csv(file("stdin"), header=F, sep=" ")
+
+# determine relevant constraints
+f = data[1, 1]
+n = data[1, 2]
+t = data[n+2, 1]
+
+# extract training & testing data
+trainData = as.data.frame(data[2:n+1,])
+testData = as.data.frame(data[(n+3):dim(data)[1],-dim(data)[2]])
+names(trainData)[f+1] = "price"
+
+# modeling
+lmfit = lm(price~., data = trainData)
+
+# summary(lmfit)
+
+pred = round(predict(lmfit, newdata = testData),digits = 2)
+cat(pred)
+
 ```
 
