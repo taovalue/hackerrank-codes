@@ -1,0 +1,238 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+```{r}
+f <- file("stdin")
+on.exit(close(f))
+
+T <- readLines(f)
+T <- strsplit(T, " ")
+Ti <- as.numeric(T[[1]])
+
+for(i in 1:Ti){
+    write("hello world", stdout())
+}
+```
+
+Sock pair
+https://www.hackerrank.com/challenges/sock-merchant/problem
+```{r}
+stdin = '9
+10 20 20 10 10 30 50 10 20'
+
+############# Solution 1
+
+library(stats)
+
+#inp <- readLines(con='stdin')
+inp <- c('9', '10 20 20 10 10 30 50 10 20')
+outp <- as.character(inp[2])
+n_socks <- as.integer(inp[1])
+sock_colours <- as.integer(unlist(strsplit(inp[2],' ')))
+# print(sock_colours)
+t <- table(sock_colours)
+matches <- sapply(t, f<-function(x){floor(x/2)})
+outp <- sum(matches)
+writeLines(as.character(outp))
+
+########## Solution 2
+f <- scan("stdin")
+a=f[-1]
+b=unique(a)
+sum=0
+for(i in 1:length(b)){
+    sum=sum+sum(a==b[i])%/%2
+}
+cat(sum)
+
+########### Soution 3
+stop <- FALSE
+f <- file("stdin")
+open(f)
+
+qTestCases <- readLines(f, n=1, warn = FALSE)
+allCases   <- readLines(f, n=1, warn = FALSE)
+
+#write(strtoi(strsplit(nextLine,' ')[[1]]),stdout())
+allCases <- strtoi(strsplit(allCases,' ')[[1]])
+    
+resumen <- table(allCases)
+completePairs <- sum(floor(resumen / 2))
+
+write(completePairs,stdout())
+
+### My solution
+f <- scan("stdin")
+a <- f[-1]
+b <- table(a)
+PairCt = sum(floor(b/2))
+cat(PairCt)
+```
+
+Jump Cloud
+https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
+```{r}
+# My solution
+input = "6 0 0 0 1 0 0"
+f = strsplit(input," ")[[1]]
+
+f <- as.integer(f)
+#f <- scan("stdin")
+a <- f[1]
+b <- f[-1]
+
+count = 0
+position = 1
+while (position < a) {
+    if (b[min(position+2,a)] == 1) {
+        position = position + 1
+    } else {
+        position = position + 2 
+    }
+    count = count + 1
+}
+
+cat(count)
+
+```
+
+Repeated String
+https://www.hackerrank.com/challenges/repeated-string/problem
+
+```{r}
+# My solution
+
+library(stringr)
+
+## ETL part
+# f = readLines("stdin")
+# input = strsplit(f," ")
+# 
+# s = input[[1]]
+# n = as.double(input[[2]])
+
+s = 'a'
+n = 1000000000000
+
+## Algo part
+cint = n%/%nchar(s)
+crem = n%%nchar(s)
+c1 = str_count(s,"a")
+
+if (crem > 0){
+  txt_rem = substr(s,1,crem)
+  c2 = str_count(txt_rem,"a")
+} else {
+  c2 = 0
+}
+
+options(scipen = 999)
+count = c1*cint + c2
+
+cat(count)
+
+```
+
+Polynomial regression (house price prediction)
+https://www.hackerrank.com/challenges/predicting-office-space-price/problem
+
+solution:
+https://www.hackerrank.com/challenges/predicting-office-space-price/leaderboard?filter=r&filter_on=language&page=1
+```{r}
+
+### ETL part
+setwd("D:/Dropbox/TaoValue/Quant/R/HackerRank")
+data = read.csv("PolyReg.txt", header=F, sep=" ")       # hackerRank console
+
+# determine relevant constraints
+f = data[1, 1]
+n = data[1, 2]
+t = data[n+2, 1]
+
+# extract training & testing data
+trainData = as.data.frame(data[2:n+1,])
+testData = as.data.frame(data[(n+3):dim(data)[1],-dim(data)[2]])
+names(trainData)[f+1] = "price"
+
+### Modeling part
+
+# find all combinations of variables up to degree 3
+combs = expand.grid(replicate(3, 0:f, simplify=FALSE))
+combs = unique(t(apply(combs, 1, sort)))
+
+# dynamically create new polynomial data
+train = matrix(0, dim(trainData)[1], dim(combs)[1])
+test = matrix(0, dim(testData)[1], dim(combs)[1])
+for (i in 2:dim(combs)[1]) {
+  train[ , i] = apply(trainData[combs[i, ]], 1, prod)
+  test[ , i] = apply(testData[combs[i, ]], 1, prod)
+}
+train = as.data.frame(train)
+train$price = trainData$price
+train$V1 = NULL
+test = as.data.frame(test)
+test$V1 = NULL
+
+# multivariate polynomial regression
+lmfit = lm(price ~ ., train)
+summary(lmfit)
+
+# predict values
+lmfit.pred = predict(lmfit, newdata=test)
+
+# print values
+cat(lmfit.pred, sep="\n")
+
+```
+
+Ployreg solution 2
+```{r}
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+infile <- read.table("/dev/stdin", sep=" ", fill=T, header=F)
+p <- infile[1, 1]
+n.train <- infile[1,2]
+n.pred <- infile[2 + n.train, 1]
+n <- n.train + n.pred
+i.train <- 1:n.train
+i.pred <- (1 + n.train):n
+
+dat <- infile[-c(1,2+n.train),]
+y <- dat[, p+1]
+x <- data.frame(dat[, -(p+1)])
+
+orders <- expand.grid(replicate(p,0:3,simplify=F))
+orders <- orders[which(rowSums(orders) <= 3),]
+
+x.poly <- array(dim=c(dim(dat)[1],dim(orders)[1]))
+for(j in 1:dim(x.poly)[2]) {
+  x.poly[,j] = apply(x^rep(t(orders[j,]),each=n),1,prod)
+}
+
+names(x.poly) <- paste("x", 1:length(names(x)), sep="")
+
+dat.poly <- data.frame(x.poly, y)
+dat.poly.train <- dat.poly[i.train, ]
+dat.poly.pred <- dat.poly[i.pred, ]
+
+fit = lm(y~.+0, dat.poly.train)
+pred = predict(fit, newdata=dat.poly.pred)
+
+write(round(pred, 2), stdout(), sep="\n")
+```
+
