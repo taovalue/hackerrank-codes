@@ -30,7 +30,7 @@ for(i in 1:Ti){
 }
 ```
 
-Sock pair
+### Sock pair
 https://www.hackerrank.com/challenges/sock-merchant/problem
 ```{r}
 stdin = '9
@@ -85,7 +85,7 @@ PairCt = sum(floor(b/2))
 cat(PairCt)
 ```
 
-Jump Cloud
+### Jump Cloud
 https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
 ```{r}
 # My solution
@@ -112,7 +112,7 @@ cat(count)
 
 ```
 
-Repeated String
+### Repeated String
 https://www.hackerrank.com/challenges/repeated-string/problem
 
 ```{r}
@@ -149,7 +149,7 @@ cat(count)
 
 ```
 
-Polynomial regression (house price prediction)
+### Polynomial regression (house price prediction)
 https://www.hackerrank.com/challenges/predicting-office-space-price/problem
 
 solution:
@@ -239,7 +239,7 @@ pred = predict(fit, newdata=dat.poly.pred)
 write(round(pred, 2), stdout(), sep="\n")
 ```
 
-Correlation/regression
+### Correlation/regression
 ```{r}
 # Enter your code here. Read input from STDIN. Print output to STDOUT
 
@@ -256,6 +256,12 @@ cat(format(lm1$coefficients[2],digits =3))
 test1 = data.frame(ps=10)
 pred = predict(lm1, newdata = test1)
 cat(format(pred,digits =3))
+
+```
+
+### Regression to predict housing price
+
+```{r}
 
 ```
 
