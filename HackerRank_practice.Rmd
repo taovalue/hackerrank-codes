@@ -157,6 +157,7 @@ https://www.hackerrank.com/challenges/predicting-office-space-price/leaderboard?
 ```{r}
 
 ### ETL part
+# data = read.csv(file("stdin"), header=F, sep=" ")       # hackerRank console
 # setwd("D:/Dropbox/TaoValue/Quant/R/HackerRank")
 data = read.csv("https://raw.githubusercontent.com/taovalue/hackerrank-codes/master/PolyReg.txt", header=F, sep=" ")       # hackerRank console
 
@@ -236,5 +237,25 @@ fit = lm(y~.+0, dat.poly.train)
 pred = predict(fit, newdata=dat.poly.pred)
 
 write(round(pred, 2), stdout(), sep="\n")
+```
+
+Correlation/regression
+```{r}
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+
+ps = c(15,12,8, 8, 7, 7, 7, 6, 5,3)
+hs = c(10,25,17,11,13,17,20,13,9,15)
+plot(ps,hs)
+lm1 = lm(hs~ps)
+# summary(lm1)
+
+# slope
+cat(format(lm1$coefficients[2],digits =3))
+
+# predict for ps = 10
+test1 = data.frame(ps=10)
+pred = predict(lm1, newdata = test1)
+cat(format(pred,digits =3))
+
 ```
 
