@@ -157,8 +157,10 @@ https://www.hackerrank.com/challenges/predicting-office-space-price/leaderboard?
 ```{r}
 
 ### ETL part
-setwd("D:/Dropbox/TaoValue/Quant/R/HackerRank")
-data = read.csv("PolyReg.txt", header=F, sep=" ")       # hackerRank console
+# setwd("D:/Dropbox/TaoValue/Quant/R/HackerRank")
+data = read.csv("https://raw.githubusercontent.com/taovalue/hackerrank-codes/master/PolyReg.txt", header=F, sep=" ")       # hackerRank console
+
+
 
 # determine relevant constraints
 f = data[1, 1]
